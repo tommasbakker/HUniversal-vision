@@ -1,8 +1,0 @@
-prefix=/home/t/Desktop/repo/install
-
-Name: rexos_utilities
-Description: Description of rexos_utilities
-Version: 0.0.0
-Cflags: -I/home/t/Desktop/repo/install/include -I/usr/include
-Libs: -L/home/t/Desktop/repo/install/lib -lrexos_utilities
-Requires: 

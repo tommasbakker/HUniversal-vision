@@ -1,8 +1,0 @@
-prefix=/home/t/Desktop/repo/install
-
-Name: rexos_std_srvs
-Description: Description of rexos_std_srvs
-Version: 0.0.0
-Cflags: -I/home/t/Desktop/repo/install/include
-Libs: -L/home/t/Desktop/repo/install/lib 
-Requires: rexos_std_msgs

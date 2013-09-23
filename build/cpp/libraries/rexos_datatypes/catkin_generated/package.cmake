@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "rexos_datatypes")
-set(rexos_datatypes_MAINTAINER "Leau Caust <lowcostvision@gmail.com>")
-set(rexos_datatypes_DEPRECATED "")
-set(rexos_datatypes_VERSION "0.0.0")
-set(rexos_datatypes_BUILD_DEPENDS )
-set(rexos_datatypes_RUN_DEPENDS )
-set(rexos_datatypes_BUILDTOOL_DEPENDS "catkin")

@@ -1,8 +1,0 @@
-prefix=/home/t/Desktop/repo/install
-
-Name: qr_code_reader_node
-Description: Description of qr_code_reader_node
-Version: 0.0.0
-Cflags: -I/home/t/Desktop/repo/install/include
-Libs: -L/home/t/Desktop/repo/install/lib 
-Requires: roscpp std_msgs camera_node camera image_transport rexos_vision rexos_datatypes cv_bridge

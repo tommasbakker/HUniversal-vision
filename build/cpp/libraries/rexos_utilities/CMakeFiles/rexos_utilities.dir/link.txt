@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC    -shared -Wl,-soname,librexos_utilities.so -o /home/t/Desktop/repo/devel/lib/librexos_utilities.so CMakeFiles/rexos_utilities.dir/src/Utilities.cpp.o 

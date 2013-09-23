@@ -1,8 +1,0 @@
-prefix=/home/t/Desktop/repo/devel
-
-Name: camera_control_node
-Description: Description of camera_control_node
-Version: 0.0.0
-Cflags: -I/home/t/Desktop/repo/src/cpp/ros/camera_control_node/include
-Libs: -L/home/t/Desktop/repo/devel/lib 
-Requires: roscpp camera_node camera

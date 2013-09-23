@@ -1,3 +1,0 @@
-cpp/libraries/camera:cpp/libraries/rexos_datatypes:cpp/libraries/rexos_utilities:cpp/libraries/rexos_vision:cpp/ros/camera_calibration_node:cpp/ros/camera_control_node:cpp/ros/camera_node:cpp/ros/part_locator_node:cpp/ros/qr_code_reader_node:cpp/ros/rexos_std_msgs:cpp/ros/rexos_std_srvs
-
-None
