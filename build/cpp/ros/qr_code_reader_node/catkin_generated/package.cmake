@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "qr_code_reader_node")
+set(qr_code_reader_node_MAINTAINER "Leau Caust <lowcostvision@gmail.com>")
+set(qr_code_reader_node_DEPRECATED "")
+set(qr_code_reader_node_VERSION "0.0.0")
+set(qr_code_reader_node_BUILD_DEPENDS "roscpp" "std_msgs" "message_generation" "camera" "camera_node" "image_transport" "cv_bridge" "rexos_vision" "rexos_datatypes")
+set(qr_code_reader_node_RUN_DEPENDS "roscpp" "std_msgs" "message_runtime" "camera" "camera_node" "image_transport" "cv_bridge" "rexos_vision" "rexos_datatypes")
+set(qr_code_reader_node_BUILDTOOL_DEPENDS "catkin")

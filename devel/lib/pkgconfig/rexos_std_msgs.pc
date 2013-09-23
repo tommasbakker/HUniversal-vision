@@ -1,0 +1,8 @@
+prefix=/home/t/Desktop/repo/devel
+
+Name: rexos_std_msgs
+Description: Description of rexos_std_msgs
+Version: 0.0.0
+Cflags: -I/home/t/Desktop/repo/devel/include
+Libs: -L/home/t/Desktop/repo/devel/lib 
+Requires: std_msgs

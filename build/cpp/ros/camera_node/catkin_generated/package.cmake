@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "camera_node")
+set(camera_node_MAINTAINER "Leau Caust <lowcostvision@gmail.com>")
+set(camera_node_DEPRECATED "")
+set(camera_node_VERSION "0.0.0")
+set(camera_node_BUILD_DEPENDS "roscpp" "std_msgs" "message_generation" "rexos_utilities" "camera" "image_transport" "cv_bridge")
+set(camera_node_RUN_DEPENDS "roscpp" "std_msgs" "message_runtime" "rexos_utilities" "camera" "image_transport" "cv_bridge")
+set(camera_node_BUILDTOOL_DEPENDS "catkin")

@@ -1,0 +1,8 @@
+prefix=/home/t/Desktop/repo/install
+
+Name: camera_node
+Description: Description of camera_node
+Version: 0.0.0
+Cflags: -I/home/t/Desktop/repo/install/include
+Libs: -L/home/t/Desktop/repo/install/lib 
+Requires: message_runtime roscpp std_msgs camera rexos_utilities image_transport cv_bridge

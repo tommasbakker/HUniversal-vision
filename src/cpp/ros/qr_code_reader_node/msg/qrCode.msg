@@ -1,2 +1,2 @@
 string value
-float64[3] corners
+point64[3] corners

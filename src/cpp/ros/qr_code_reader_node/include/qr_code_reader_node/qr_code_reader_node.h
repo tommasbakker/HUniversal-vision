@@ -34,6 +34,7 @@
 #include "ros/ros.h"
 
 #include <image_transport/image_transport.h>
+#include <rexos_vision/QRCodeDetector.h> 
 
 #include <camera_node/camera_node.h>
 #include <camera_calibration_node/CalibrateLens.h>
@@ -46,6 +47,8 @@ public:
 private:
 	ros::NodeHandle nodeHandle;
   	ros::Publisher qrCodesPublisher;
+
+	rexos_vision::QRCodeDetector qr;
 
 	image_transport::ImageTransport it;
 };

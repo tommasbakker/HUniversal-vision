@@ -30,6 +30,10 @@
 
 #include "qr_code_reader_node/qr_code_reader_node.h"
 #include "qr_code_reader_node/qrCode.h"
+#include "qr_code_reader_node/Collection.h"
+
+#include <rexos_vision/QRCodeDetector.h> 
+#include <rexos_datatypes/QrCode.h> 
 
 #include <image_transport/image_transport.h>
 #include "sensor_msgs/Image.h"
@@ -40,10 +44,11 @@ QrCodeReaderNode::QrCodeReaderNode() :
 
 	it(nodeHandle)
 {
-	ros::Publisher qrCodesPublisher = nodeHandle.advertise<qr_code_reader_node::qrCode>("camera/qr_codes", 10);
+	qrCodesPublisher = nodeHandle.advertise<qr_code_reader_node::Collection>("camera/qr_codes", 10);
 }
 
 void QrCodeReaderNode::run() {
+	image_transport::Subscriber sub = it.subscribe("camera/image", 1, &QrCodeReaderNode::handleFrame, this);
 	ROS_INFO("Waiting for frames");
 	ros::spin();
 }
@@ -55,8 +60,46 @@ void QrCodeReaderNode::handleFrame(const sensor_msgs::ImageConstPtr& msg) {
 		cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
 		cv::Mat* image = new cv::Mat(cv_ptr->image);
 
+		//Insert code here!
+		qr_code_reader_node::Collection message;
+		std::vector<rexos_datatypes::QrCode> qrCodes;
+		cv::TermCriteria criteria;
 		
-
+		qr.detectQRCodes(*image, qrCodes);
+		
+		for(int i = 0; i < qrCodes.size(); i++){
+			qr_code_reader_node::qrCode qrCode;
+			qrCode.value = qrCodes[i].name;
+			
+			std::vector<cv::Point2f> points;
+			points = qrCodes[i].getPoints();
+			
+			qr_code_reader_node::point64 pointA;
+			pointA.x = points[0].x;
+			pointA.y = points[0].y;
+			qr_code_reader_node::point64 pointB;
+			pointB.x = points[1].x;
+			pointB.y = points[1].y;
+			qr_code_reader_node::point64 pointC;
+			pointC.x = points[2].x;
+			pointC.y = points[2].y;
+			
+			qrCode.corners[0] = (pointA);
+			qrCode.corners[1] = (pointB);
+			qrCode.corners[2] = (pointC);
+			
+			message.collection.push_back(qrCode);
+		
+			ROS_INFO_STREAM("QR-code\tpointA = " << pointA << " pointB = " << pointB << " pointC = " << pointC << "Value = " << qrCode.value);
+		}
+		
+		for(int i = 0; i < qrCodes.size(); i++){
+			qrCodes[i].draw(*image);
+		}
+		cv::imwrite("/home/t/Desktop/test_results/trollolololol.png", *image);
+		
+		qrCodesPublisher.publish(message);
+		//
 
 		ROS_INFO("image processed");
 	}

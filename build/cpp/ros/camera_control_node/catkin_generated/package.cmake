@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "camera_control_node")
+set(camera_control_node_MAINTAINER "Leau Caust <lowcostvision@gmail.com>")
+set(camera_control_node_DEPRECATED "")
+set(camera_control_node_VERSION "0.0.0")
+set(camera_control_node_BUILD_DEPENDS "roscpp" "camera" "camera_node")
+set(camera_control_node_RUN_DEPENDS "roscpp" "camera" "camera_node")
+set(camera_control_node_BUILDTOOL_DEPENDS "catkin")

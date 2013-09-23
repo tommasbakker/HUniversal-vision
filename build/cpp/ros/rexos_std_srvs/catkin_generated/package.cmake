@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "rexos_std_srvs")
+set(rexos_std_srvs_MAINTAINER "Leau Caust <lowcostvision@gmail.com>")
+set(rexos_std_srvs_DEPRECATED "")
+set(rexos_std_srvs_VERSION "0.0.0")
+set(rexos_std_srvs_BUILD_DEPENDS "rexos_std_msgs")
+set(rexos_std_srvs_RUN_DEPENDS "rexos_std_msgs")
+set(rexos_std_srvs_BUILDTOOL_DEPENDS "catkin")

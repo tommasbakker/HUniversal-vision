@@ -1,0 +1,2 @@
+set(camera_calibration_node_MSG_INCLUDE_DIRS "")
+set(camera_calibration_node_MSG_DEPENDENCIES std_msgs)

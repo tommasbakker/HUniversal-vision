@@ -1,0 +1,8 @@
+prefix=/home/t/Desktop/repo/devel
+
+Name: camera_calibration_node
+Description: Description of camera_calibration_node
+Version: 0.0.0
+Cflags: -I/home/t/Desktop/repo/devel/include -I/home/t/Desktop/repo/src/cpp/ros/camera_calibration_node/include
+Libs: -L/home/t/Desktop/repo/devel/lib 
+Requires: roscpp std_msgs camera_control_node camera_node camera image_transport cv_bridge

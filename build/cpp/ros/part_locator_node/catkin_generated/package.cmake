@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "part_locator_node")
+set(part_locator_node_MAINTAINER "Leau Caust <lowcostvision@gmail.com>")
+set(part_locator_node_DEPRECATED "")
+set(part_locator_node_VERSION "0.0.0")
+set(part_locator_node_BUILD_DEPENDS "roscpp" "std_msgs" "message_generation" "qr_code_reader_node")
+set(part_locator_node_RUN_DEPENDS "roscpp" "std_msgs" "message_runtime" "qr_code_reader_node")
+set(part_locator_node_BUILDTOOL_DEPENDS "catkin")
