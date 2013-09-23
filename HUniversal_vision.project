@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="HUniversal_vision" InternalType="Console">
+  <VirtualDirectory Name="src">
+    <VirtualDirectory Name="cpp">
+      <VirtualDirectory Name="libraries">
+        <VirtualDirectory Name="camera">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="camera">
+              <File Name="src/cpp/libraries/camera/include/camera/unicap_cv_bridge.h"/>
+              <File Name="src/cpp/libraries/camera/include/camera/RectifyImage.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/libraries/camera/src/unicap_cv_bridge.cpp"/>
+            <File Name="src/cpp/libraries/camera/src/RectifyImage.cpp"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/libraries/camera/CMakeLists.txt"/>
+          <File Name="src/cpp/libraries/camera/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="rexos_datatypes">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="rexos_datatypes">
+              <File Name="src/cpp/libraries/rexos_datatypes/include/rexos_datatypes/MotorRotation.h"/>
+              <File Name="src/cpp/libraries/rexos_datatypes/include/rexos_datatypes/Crate.h"/>
+              <File Name="src/cpp/libraries/rexos_datatypes/include/rexos_datatypes/Point3D.h"/>
+              <File Name="src/cpp/libraries/rexos_datatypes/include/rexos_datatypes/QrCode.h"/>
+              <File Name="src/cpp/libraries/rexos_datatypes/include/rexos_datatypes/DeltaRobotMeasures.h"/>
+              <File Name="src/cpp/libraries/rexos_datatypes/include/rexos_datatypes/Point2D.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/libraries/rexos_datatypes/src/QrCodes.cpp"/>
+            <File Name="src/cpp/libraries/rexos_datatypes/src/Crate.cpp"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/libraries/rexos_datatypes/CMakeLists.txt"/>
+          <File Name="src/cpp/libraries/rexos_datatypes/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="rexos_utilities">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="rexos_utilities">
+              <File Name="src/cpp/libraries/rexos_utilities/include/rexos_utilities/Utilities.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/libraries/rexos_utilities/src/Utilities.cpp"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/libraries/rexos_utilities/CMakeLists.txt"/>
+          <File Name="src/cpp/libraries/rexos_utilities/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="rexos_vision">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="rexos_vision">
+              <File Name="src/cpp/libraries/rexos_vision/include/rexos_vision/QRCodeDetector.h"/>
+              <File Name="src/cpp/libraries/rexos_vision/include/rexos_vision/FiducialDetector.h"/>
+              <File Name="src/cpp/libraries/rexos_vision/include/rexos_vision/CrateTracker.h"/>
+              <File Name="src/cpp/libraries/rexos_vision/include/rexos_vision/PixelAndRealCoordinateTransformer.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/libraries/rexos_vision/src/CrateTracker.cpp"/>
+            <File Name="src/cpp/libraries/rexos_vision/src/FiducialDetector.cpp"/>
+            <File Name="src/cpp/libraries/rexos_vision/src/QRCodeDetector.cpp"/>
+            <File Name="src/cpp/libraries/rexos_vision/src/PixelAndRealCoordinateTransformer.cpp"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/libraries/rexos_vision/CMakeLists.txt"/>
+          <File Name="src/cpp/libraries/rexos_vision/package.xml"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+      <VirtualDirectory Name="ros">
+        <VirtualDirectory Name="rexos_std_srvs">
+          <VirtualDirectory Name="srv">
+            <File Name="src/cpp/ros/rexos_std_srvs/srv/Module.srv"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/rexos_std_srvs/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/rexos_std_srvs/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="camera_calibration_node">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="camera_calibration_node">
+              <File Name="src/cpp/ros/camera_calibration_node/include/camera_calibration_node/camera_calibration_node.h"/>
+              <File Name="src/cpp/ros/camera_calibration_node/include/camera_calibration_node/Services.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/ros/camera_calibration_node/src/camera_calibration_node.cpp"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="srv">
+            <File Name="src/cpp/ros/camera_calibration_node/srv/CalibrateBrightness.srv"/>
+            <File Name="src/cpp/ros/camera_calibration_node/srv/CalibrateLens.srv"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/camera_calibration_node/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/camera_calibration_node/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="part_locator_node">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="part_locator_node">
+              <File Name="src/cpp/ros/part_locator_node/include/part_locator_node/part_locator_node.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/ros/part_locator_node/src/part_locator_node.cpp"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/part_locator_node/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/part_locator_node/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="rexos_std_msgs">
+          <VirtualDirectory Name="msg">
+            <File Name="src/cpp/ros/rexos_std_msgs/msg/StdReturn.msg"/>
+            <File Name="src/cpp/ros/rexos_std_msgs/msg/KeyValuePair.msg"/>
+            <File Name="src/cpp/ros/rexos_std_msgs/msg/Map.msg"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/rexos_std_msgs/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/rexos_std_msgs/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="camera_control_node">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="camera_control_node">
+              <File Name="src/cpp/ros/camera_control_node/include/camera_control_node/camera_control_node.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/ros/camera_control_node/src/camera_control_node.cpp"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/camera_control_node/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/camera_control_node/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="qr_code_reader_node">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="qr_code_reader_node">
+              <File Name="src/cpp/ros/qr_code_reader_node/include/qr_code_reader_node/qr_code_reader_node.h"/>
+              <File Name="src/cpp/ros/qr_code_reader_node/include/qr_code_reader_node/Services.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/ros/qr_code_reader_node/src/qr_code_reader_node.cpp"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="msg">
+            <File Name="src/cpp/ros/qr_code_reader_node/msg/point64.msg"/>
+            <File Name="src/cpp/ros/qr_code_reader_node/msg/Collection.msg"/>
+            <File Name="src/cpp/ros/qr_code_reader_node/msg/qrCode.msg"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/qr_code_reader_node/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/qr_code_reader_node/package.xml"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="camera_node">
+          <VirtualDirectory Name="include">
+            <VirtualDirectory Name="camera_node">
+              <File Name="src/cpp/ros/camera_node/include/camera_node/camera_node.h"/>
+              <File Name="src/cpp/ros/camera_node/include/camera_node/Services.h"/>
+            </VirtualDirectory>
+          </VirtualDirectory>
+          <VirtualDirectory Name="src">
+            <File Name="src/cpp/ros/camera_node/src/camera_node.cpp"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="msg">
+            <File Name="src/cpp/ros/camera_node/msg/matrix3x3.msg"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="srv">
+            <File Name="src/cpp/ros/camera_node/srv/CorrectionMatrices.srv"/>
+            <File Name="src/cpp/ros/camera_node/srv/AutoWhiteBalance.srv"/>
+            <File Name="src/cpp/ros/camera_node/srv/FishEyeCorrection.srv"/>
+          </VirtualDirectory>
+          <File Name="src/cpp/ros/camera_node/CMakeLists.txt"/>
+          <File Name="src/cpp/ros/camera_node/DeltaLens_2012-01-20.xml"/>
+          <File Name="src/cpp/ros/camera_node/package.xml"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <File Name="src/CMakeLists.txt"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Executable">
+    <Configuration Name="Debug" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand>bash -c "rm -r devel/ build/ ; source /opt/ros/groovy/setup.bash ; source rexos-build.sh"</RebuildCommand>
+        <CleanCommand>bash -c "rm -r devel/ build/"</CleanCommand>
+        <BuildCommand>bash -c "source /opt/ros/groovy/setup.bash ; source rexos-build.sh"</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-O2" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <GlobalSettings>
+      <Compiler Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+  </Settings>
+</CodeLite_Project>
