@@ -51,6 +51,7 @@ private:
 	rexos_vision::QRCodeDetector qr;
 
 	image_transport::ImageTransport it;
+	image_transport::Publisher pub;
 };
 
 #endif /* QRCODEREADERNODE_H_ */

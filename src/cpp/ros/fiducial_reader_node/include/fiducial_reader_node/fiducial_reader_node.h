@@ -51,6 +51,7 @@ private:
 	rexos_vision::FiducialDetector fiducial;
 
 	image_transport::ImageTransport it;
+	image_transport::Publisher pub;
 };
 
 #endif /* FIDUCIALREADERNODE_H_ */

@@ -44,7 +44,9 @@ QrCodeReaderNode::QrCodeReaderNode() :
 
 	it(nodeHandle)
 {
-	qrCodesPublisher = nodeHandle.advertise<qr_code_reader_node::Collection>("camera/qr_codes", 10);
+	ROS_INFO("Advertising topic");
+	qrCodesPublisher = nodeHandle.advertise<qr_code_reader_node::Collection>("camera/qr_codes", 1000);
+	pub = it.advertise("camera/qr_debug_image", 1);
 }
 
 void QrCodeReaderNode::run() {
@@ -59,11 +61,12 @@ void QrCodeReaderNode::handleFrame(const sensor_msgs::ImageConstPtr& msg) {
 	try {
 		cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
 		cv::Mat* image = new cv::Mat(cv_ptr->image);
+		cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+		cv::Mat* image2 = new cv::Mat(cv_ptr->image);
 
 		//Insert code here!
 		qr_code_reader_node::Collection message;
 		std::vector<rexos_datatypes::QrCode> qrCodes;
-		cv::TermCriteria criteria;
 		
 		qr.detectQRCodes(*image, qrCodes);
 		
@@ -94,12 +97,26 @@ void QrCodeReaderNode::handleFrame(const sensor_msgs::ImageConstPtr& msg) {
 		}
 		
 		for(int i = 0; i < qrCodes.size(); i++){
-			qrCodes[i].draw(*image);
+			qrCodes[i].draw(*image2);
 		}
-		cv::imwrite("/home/t/Desktop/test_results/trollolololol.png", *image);
+		
+		ros::Rate frameRate(10);
+		ros::Time time = ros::Time::now();
+		
+		cv_bridge::CvImage cvi;
+		cvi.header.stamp = time;
+		cvi.header.frame_id = "qr_debug_image";
+		cvi.encoding = sensor_msgs::image_encodings::BGR8;
+		cvi.image = *image2;
+		
+		pub.publish(cvi.toImageMsg());
+		//cv::imwrite("/home/t/Desktop/test_results/trollolololol.png", *image);
+		frameRate.sleep();
 		
 		qrCodesPublisher.publish(message);
-		//
+		
+		delete image;
+		delete image2;
 
 		ROS_INFO("image processed");
 	}
@@ -109,7 +126,7 @@ void QrCodeReaderNode::handleFrame(const sensor_msgs::ImageConstPtr& msg) {
 }
 
 int main(int argc, char* argv[]) {
-	ros::init(argc, argv, "cameraCalibrationNode");
+	ros::init(argc, argv, "qr_code_reader_node");
 	ROS_DEBUG("Constructing node");
 
 	QrCodeReaderNode node;
