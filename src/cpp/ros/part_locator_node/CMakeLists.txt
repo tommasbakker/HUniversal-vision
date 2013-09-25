@@ -3,7 +3,7 @@ project(part_locator_node)
 
 
 ## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs message_generation qr_code_reader_node)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs message_generation qr_code_reader_node Vectors Matrices)
 find_package(OpenCV REQUIRED COMPONENTS)
 
 file(GLOB_RECURSE msgs RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/msg" "*.msg")
@@ -25,7 +25,7 @@ generate_messages (
 catkin_package(
 INCLUDE_DIRS include
 LIBRARIES  
-CATKIN_DEPENDS message_runtime roscpp std_msgs qr_code_reader_node
+CATKIN_DEPENDS message_runtime roscpp std_msgs qr_code_reader_node Vectors Matrices
 DEPENDS OpenCV)
 
 file(GLOB_RECURSE sources "src" "*.cpp" "*.c")

@@ -31,6 +31,8 @@
 #include "part_locator_node/part_locator_node.h"
 #include <opencv/cv.h>
 #include <opencv2/highgui/highgui.hpp>
+#include <Matrices/Matrices.h>
+#include <Vectors/Vectors.h>
 #include <qr_code_reader_node/Collection.h>
 
 #include <iostream>
@@ -46,9 +48,6 @@ struct qrCode {
 
 PartLocatorNode::PartLocatorNode()
 {
-	
-	ros::Subscriber sub = nodeHandle.subscribe("camera/qr_codes", 10, &PartLocatorNode::qrCodeCallback,this);
-	
 }
 void PartLocatorNode::getRotationAngle(){
 
@@ -80,56 +79,143 @@ Point2f PartLocatorNode::rotatePoint(Point2f point, float angle)
 }
 
 void PartLocatorNode::qrCodeCallback(const qr_code_reader_node::Collection & message){
-	string upperLeft = "WP_800_400_TL";
-	string upperRight = "WP_800_400_TR";
-	string lowerRight = "WP_800_400_BR";
+	string topLeftValue = "WP_800_400_TL";
+	string topRightValue = "WP_800_400_TR";
+	string bottomRightValue = "WP_800_400_BR";
+	
+	Vector2 topLeftCoor;
+	Vector2 topRightCoor;
+	Vector2 bottomRightCoor;
 	
 	int collectionSize = message.collection.size();
-	Point2f qrPoints[3];
+	
+	if(collectionSize != 3) return;
 	
 	for(int i = 0; i < collectionSize; i++){		
-		if(upperLeft.compare(message.collection[i].value) == 0){
-			qrPoints[0].x = message.collection[i].corners[0].x + message.collection[i].corners[1].x + message.collection[i].corners[2].x;
-			qrPoints[0].y = message.collection[i].corners[0].y + message.collection[i].corners[1].y + message.collection[i].corners[2].y;			
-		}else if(upperRight.compare(message.collection[i].value) == 0){
-			qrPoints[1].x = message.collection[i].corners[2].x;
-			qrPoints[1].y = message.collection[i].corners[2].y;			
-		}else if(lowerRight.compare(message.collection[i].value) == 0){
-			qrPoints[2].x = message.collection[i].corners[0].x;
-			qrPoints[2].y = message.collection[i].corners[0].y;			
+		if(topLeftValue.compare(message.collection[i].value) == 0){
+			topLeftCoor.x = message.collection[i].corners[1].x;
+			topLeftCoor.y = message.collection[i].corners[1].y;			
+		}else if(topRightValue.compare(message.collection[i].value) == 0){
+			topRightCoor.x = message.collection[i].corners[1].x;
+			topRightCoor.y = message.collection[i].corners[1].y;			
+		}else if(bottomRightValue.compare(message.collection[i].value) == 0){
+			bottomRightCoor.x = message.collection[i].corners[1].x;
+			bottomRightCoor.y = message.collection[i].corners[1].y;			
 		}
 	}
+	ROS_INFO_STREAM("topLeftCoor " << topLeftCoor);
+	ROS_INFO_STREAM("topRightCoor " << topRightCoor);
+	ROS_INFO_STREAM("bottomRightCoor " << bottomRightCoor);
 	
-	float angle = getAngleBetweenTwoPoints(qrPoints[0],qrPoints[1]);
+	////////////
+	// calulate midpoint
+	////////////
+	// line between topLeft and topRight
+	Vector2 lineTl2Tr;
+	lineTl2Tr.x = topRightCoor.x - topLeftCoor.x;
+	lineTl2Tr.y = topRightCoor.y - topLeftCoor.y;
+	ROS_INFO_STREAM("lineTl2Tr " << lineTl2Tr);
+	
+	// line between topRight and bottomRight
+	Vector2 lineTr2Br;
+	lineTr2Br.x = bottomRightCoor.x - topRightCoor.x;
+	lineTr2Br.y = bottomRightCoor.y - topRightCoor.y;
+	ROS_INFO_STREAM("lineTr2Br " << lineTr2Br);
+	
+	// calulate new midpoint by deviding lineTl2Tr and bottomRight and then adding them
+	Vector2 halfLineTl2Tr;
+	halfLineTl2Tr.x = lineTl2Tr.x / 2;
+	halfLineTl2Tr.y = lineTl2Tr.y / 2;
+	Vector2 halfLineTr2Br;
+	halfLineTr2Br.x = lineTr2Br.x / 2;
+	halfLineTr2Br.y = lineTr2Br.y / 2;
+	
+	Vector2 midPoint;
+	midPoint.x = topLeftCoor.x + halfLineTl2Tr.x + halfLineTr2Br.x;
+	midPoint.y = topLeftCoor.y + halfLineTl2Tr.y + halfLineTr2Br.y;
+	ROS_INFO_STREAM("midpoint " << midPoint);
+	
+	Matrix3 translationMatrixA;
+	translationMatrixA[2] = -midPoint.x;
+	translationMatrixA[5] = -midPoint.y;
+	Matrix3 translationMatrixB;
+	translationMatrixB[2] = midPoint.x;
+	translationMatrixB[5] = midPoint.y;
+	ROS_INFO_STREAM("translationMatrixA " << translationMatrixA);
+	//ROS_INFO_STREAM("translationMatrixB " << translationMatrixB);
 	
 	
-	ROS_INFO("im getting stuff %f" , angle);
-}
+	////////////
+	// calulate rotation angle
+	////////////
+	// the expected vector is horizontal to the left because TR is at the right of TL (eg. walk in this direction to get to TR)
+	Vector2 expectedDirection(-1, 0); 
+	Vector2 actualDirection;
+	actualDirection.x = lineTl2Tr.x;
+	actualDirection.y = lineTl2Tr.y;
+	actualDirection.normalize();
+	
+	// we could calulate the angle by calulating the dot product and convert it to radians. But this is a more fancy approach (it actually aint)
+	// calulate the expected angle (0)
+	double expectedAngle = acos(expectedDirection.x);
+	if(expectedDirection.y < 0) expectedAngle = 0 - expectedAngle;
+	
+	// calulate the actual angle
+	double actualAngle = acos(actualDirection.x);
+	if(actualDirection.y < 0) actualAngle = 0 - actualAngle;
+	
+	// substract the two angles to get the correction angle
+	double correctionAngle = expectedAngle - actualAngle;
+	
+	Matrix3 rotationMatrix;
+	rotationMatrix[0] = cos(correctionAngle);
+	rotationMatrix[1] = -sin(correctionAngle);
+	rotationMatrix[3] = sin(correctionAngle);
+	rotationMatrix[4] = cos(correctionAngle);
+	ROS_INFO_STREAM("rotationMatrix " << rotationMatrix);
 
-
-
-float PartLocatorNode::getAngleBetweenTwoPoints(Point2f point1, Point2f point2){
+	ROS_INFO_STREAM("expectedDirection " << expectedDirection);
+	ROS_INFO_STREAM("actualDirection " << actualDirection);
+	ROS_INFO_STREAM("correctionAngle " << correctionAngle);
 	
-	float angle = 0.0;
+	////////////
+	// scale to workplate coor system
+	////////////
+	double workplateWidth = 80;
+	double workplateHeight = 40;
+	Matrix3 scaleMatrix;
+	scaleMatrix[0] = -(	(workplateWidth / 1) / (lineTl2Tr.length()));
+	scaleMatrix[4] = 	(workplateHeight / 1) / (lineTr2Br.length());
+	ROS_INFO_STREAM("lineTl2Tr.length() " << lineTl2Tr.length());
+	ROS_INFO_STREAM("lineTr2Br.length() " << lineTr2Br.length());
+	ROS_INFO_STREAM("scaleMatrix " << scaleMatrix);
 	
-	if(point1.x >= point2.x){
-		
-		angle = atan2(point1.y - point2.y, point1.x - point2.x);
-	}else{
-		angle = atan2(point2.y - point1.y, point2.x - point1.x);
+	for(int i = 0; i < collectionSize; i++){
+		//for(int j = 0; j < 3; j++){
+			Vector3 oldVector;
+			oldVector.x = message.collection[i].corners[1].x;
+			oldVector.y = message.collection[i].corners[1].y;
+			oldVector.z = 1;
+			
+			ROS_INFO_STREAM("QrCode \t" << message.collection[i].value);
+			Vector3 newCoor = oldVector;
+			ROS_INFO_STREAM("-old \t\t" << newCoor);
+			newCoor = translationMatrixA * newCoor;
+			ROS_INFO_STREAM("-transCoor \t" << newCoor);
+			newCoor = rotationMatrix * newCoor;
+			ROS_INFO_STREAM("rotCoor \t" << newCoor);
+			newCoor = scaleMatrix * newCoor;
+			ROS_INFO_STREAM("-scaleCoor \t" << newCoor);
+		//}
 	}
-	
-	angle *= 180 / 3.14159265359;
-	if(angle < 0){
-		angle*=-1;
-		angle+=180;
-	}
-	return angle;
 }
+	
 
 
 void PartLocatorNode::run() {
 	ROS_INFO("waiting for camera/qr_codes");
+	ros::Subscriber sub = nodeHandle.subscribe("camera/qr_codes", 10, &PartLocatorNode::qrCodeCallback,this);
+	
 	getRotationAngle();
 	ros::spin();
 }
@@ -137,6 +223,153 @@ void PartLocatorNode::run() {
 int main(int argc, char* argv[]) {
 	ros::init(argc, argv, "part_locator_node");
 	ROS_DEBUG("Constructing node");
+
+
+
+
+
+
+
+
+/*	Vector2 topLeftCoor(50, 0);
+	Vector2 topRightCoor(100, 50);
+	Vector2 bottomRightCoor(50, 100);*/
+/*	Vector2 topLeftCoor(0, 0);
+	Vector2 topRightCoor(100, 0);
+	Vector2 bottomRightCoor(100, 100);*/
+	Vector2 topLeftCoor(100, 0);
+	Vector2 topRightCoor(100, 100);
+	Vector2 bottomRightCoor(0, 100);
+	
+	////////////
+	// calulate midpoint
+	////////////
+	
+	
+	// line between topLeft and topRight
+	Vector2 lineTl2Tr;
+	lineTl2Tr.x = topRightCoor.x - topLeftCoor.x;
+	lineTl2Tr.y = topRightCoor.y - topLeftCoor.y;
+	ROS_INFO_STREAM("lineTl2Tr " << lineTl2Tr);
+	
+	// line between topRight and bottomRight
+	Vector2 lineTr2Br;
+	lineTr2Br.x = bottomRightCoor.x - topRightCoor.x;
+	lineTr2Br.y = bottomRightCoor.y - topRightCoor.y;
+	ROS_INFO_STREAM("lineTr2Br " << lineTr2Br);
+	
+	// calulate new midpoint by deviding lineTl2Tr and bottomRight and then adding them
+	Vector2 halfLineTl2Tr;
+	halfLineTl2Tr.x = lineTl2Tr.x / 2;
+	halfLineTl2Tr.y = lineTl2Tr.y / 2;
+	Vector2 halfLineTr2Br;
+	halfLineTr2Br.x = lineTr2Br.x / 2;
+	halfLineTr2Br.y = lineTr2Br.y / 2;
+	
+	Vector2 midPoint;
+	midPoint.x = topLeftCoor.x + halfLineTl2Tr.x + halfLineTr2Br.x;
+	midPoint.y = topLeftCoor.y + halfLineTl2Tr.y + halfLineTr2Br.y;
+	ROS_INFO_STREAM("midpoint " << midPoint);
+	
+	Matrix3 translationMatrixA;
+	translationMatrixA[2] = -midPoint.x;
+	translationMatrixA[5] = -midPoint.y;
+	Matrix3 translationMatrixB;
+	translationMatrixB[2] = midPoint.x;
+	translationMatrixB[5] = midPoint.y;
+	ROS_INFO_STREAM("translationMatrixA " << translationMatrixA);
+	ROS_INFO_STREAM("translationMatrixB " << translationMatrixB);
+	
+	
+	////////////
+	// calulate rotation angle
+	////////////
+	
+	// the expected vector is horizontal to the left because TR is at the right of TL (eg. walk in this direction to get to TR)
+	Vector2 expectedDirection(1, 0); 
+	Vector2 actualDirection;
+	actualDirection.x = lineTl2Tr.x;
+	actualDirection.y = lineTl2Tr.y;
+	actualDirection.normalize();
+	
+	// we could calulate the angle by calulating the dot product and convert it to radians. But this is a more fancy approach (it actually aint)
+	// calulate the expected angle (0)
+	double expectedAngle = acos(expectedDirection.x);
+	if(expectedDirection.y < 0) expectedAngle = 0 - expectedAngle;
+	
+	// calulate the actual angle
+	double actualAngle = acos(actualDirection.x);
+	if(actualDirection.y < 0) actualAngle = 0 - actualAngle;
+	
+	// substract the two angles to get the correction angle
+	double correctionAngle = expectedAngle - actualAngle;
+	
+	Matrix3 rotationMatrix;
+	rotationMatrix[0] = cos(correctionAngle);
+	rotationMatrix[1] = -sin(correctionAngle);
+	rotationMatrix[3] = sin(correctionAngle);
+	rotationMatrix[4] = cos(correctionAngle);
+	ROS_INFO_STREAM("rotationMatrix " << rotationMatrix);
+
+	ROS_INFO_STREAM("expectedDirection " << expectedDirection);
+	ROS_INFO_STREAM("actualDirection " << actualDirection);
+	ROS_INFO_STREAM("correctionAngle " << correctionAngle);
+	
+	////////////
+	// scale to workplate coor system
+	////////////
+	double workplateWidth = 80;
+	double workplateHeight = 40;
+	Matrix3 scaleMatrix;
+	scaleMatrix[0] = (1 / lineTl2Tr.length()) * workplateWidth;
+	scaleMatrix[4] = (1 / lineTr2Br.length()) * workplateHeight;
+	ROS_INFO_STREAM("scaleMatrix " << scaleMatrix);
+	
+	
+	
+	Matrix3 totalMatrix = translationMatrixA * rotationMatrix * scaleMatrix;
+	ROS_INFO_STREAM("totalMatrix " << totalMatrix);
+	Vector3 oldCoor(100, 0, 1);
+	Vector3 newCoor;
+	
+	newCoor = Vector3(100, 0, 1);
+	newCoor = translationMatrixA * newCoor;
+	ROS_INFO_STREAM("newCoor " << newCoor);
+	newCoor = rotationMatrix * newCoor;
+	ROS_INFO_STREAM("newCoor " << newCoor);
+	newCoor = scaleMatrix * newCoor;
+	ROS_INFO_STREAM("-newCoor " << newCoor);
+	ROS_INFO_STREAM("-newCoor " << totalMatrix * newCoor);
+	
+	newCoor = Vector3(100, 100, 1);
+	newCoor = translationMatrixA * newCoor;
+	ROS_INFO_STREAM("newCoor " << newCoor);
+	newCoor = rotationMatrix * newCoor;
+	ROS_INFO_STREAM("newCoor " << newCoor);
+	newCoor = scaleMatrix * newCoor;
+	ROS_INFO_STREAM("-newCoor " << newCoor);
+	ROS_INFO_STREAM("-newCoor " << totalMatrix * newCoor);
+	
+	newCoor = Vector3(0, 100, 1);
+	newCoor = translationMatrixA * newCoor;
+	ROS_INFO_STREAM("newCoor " << newCoor);
+	newCoor = rotationMatrix * newCoor;
+	ROS_INFO_STREAM("newCoor " << newCoor);
+	newCoor = scaleMatrix * newCoor;
+	ROS_INFO_STREAM("-newCoor " << newCoor);
+	ROS_INFO_STREAM("-newCoor " << totalMatrix * newCoor);
+	
+	//float angle = getAngleBetweenTwoPoints(qrPoints[0],qrPoints[1]);
+	
+	
+
+
+
+
+
+
+
+
 
 	PartLocatorNode node;
 	
